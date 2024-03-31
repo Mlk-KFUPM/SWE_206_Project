@@ -13,13 +13,17 @@ import org.springframework.web.bind.annotation.RestController;
 /*
         localhost:8080/api
 
-/login?username= & password=
+/login ?username= & password=
 
-/reserve?Userid= & facilityId= & time=
+/facilities
 
-/createEvent?id= & facilityId= & time=
+/reservation ?facilityName= & gender= & timing= & userID=
 
-/joinEvent?id= & eventId=
+/userReservations ?userID=
+
+/createEvent ?userID= & facilityId= & time=
+
+/joinEvent ?userID= & eventId=
 
 
 
@@ -39,7 +43,7 @@ public class UserController {
         return  services.login(email, password);
     }
     @GetMapping("/facilities")
-    public Facility[] getFacilities(){
+    public Object getFacilities(){
         return services.facilities();
     }
 
@@ -47,8 +51,8 @@ public class UserController {
     public boolean reservation(@RequestParam String facilityName, @RequestParam String gender, @RequestParam String timing, @RequestParam String userID){
         return  services.addReservation(facilityName, gender, timing, userID);
     }
-    @GetMapping("/login")
-    public Reservation[] userReservations(@RequestParam String userID){
+    @GetMapping("/userReservations")
+    public Object userReservations(@RequestParam String userID){
         return  services.userReservations(userID);
     }
 }

@@ -38,8 +38,8 @@ public class Services {
         return false;
     }
 
-    public Facility[] facilities(){
-        return (Facility[]) facilityList.toArray();
+    public Object facilities(){
+        return facilityList.toArray();
     }
 
     public boolean addReservation(String facilityName, String gender, String timing, String userID){
@@ -52,15 +52,15 @@ public class Services {
         return false;
     }
 
-    public Reservation[] userReservations(String id){
-        ArrayList<Reservation> userReseravtion = new ArrayList<>();
+    public Object userReservations(String id){
+        List<Reservation> userReseravtion = new ArrayList<>();
 
         for (Reservation reservation: reservationList){
             if (reservation.getUserID().equals(id)){
                 userReseravtion.add(reservation);
             }
         }
-        return (Reservation[]) userReseravtion.toArray();
+        return userReseravtion.toArray();
     }
 
 
