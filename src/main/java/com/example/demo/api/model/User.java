@@ -1,17 +1,18 @@
-package com.example.demo.model;
+package com.example.demo.api.model;
 
 public class User {
 
     private int id;
     private String name;
-    private int age;
+    private String password;
     private String email;
 
-    public User(int id, String name, int age, String email) {
+
+    public User(int id, String name, String email, String password) {
         this.id = id;
         this.name = name;
-        this.age = age;
         this.email = email;
+        this.password = password;
     }
 
     public int getId() {
@@ -30,14 +31,6 @@ public class User {
         this.name = name;
     }
 
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -45,4 +38,13 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
 }
