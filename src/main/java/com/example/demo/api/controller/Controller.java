@@ -10,6 +10,11 @@ class LoginRequest {
     public String email;
     public String password;
 }
+
+class addReservationBody {
+    public String facilityName;
+    public String timing;
+}
 @RestController
 public class Controller {
 
@@ -29,9 +34,9 @@ public class Controller {
         return services.facilities(userID);
     }
 
-    @GetMapping("/reservation")
-    public boolean reservation(@RequestParam String facilityName, @RequestParam String gender, @RequestParam String timing, @RequestParam String userID){
-        return  services.addReservation(facilityName, gender, timing, userID);
+    @PostMapping("/reservation")
+    public boolean reservation(@RequestBody addReservationBody body, @RequestParam String userID){
+        return  services.addReservation(body.facilityName, body.timing, userID);
     }
     @GetMapping("/userReservations")
     public Object userReservations(@RequestParam String userID){

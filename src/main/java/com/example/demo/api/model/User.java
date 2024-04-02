@@ -6,13 +6,40 @@ public class User {
     private String name;
     private String password;
     private String email;
+    private Gender gender;
+    private Role role;
+
+    public enum Role {
+        admin,
+        student,
+        faculty,
+        staff,
+        club_president
+    }
+    public enum Gender {
+        male,
+        female
+    }
 
 
-    public User(String id, String name, String email, String password) {
+    public User(String id, String name, String email, String password, Role role, Gender gender) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
+        this.role = role;
+        this.gender = gender;
+    }
+    public String getGender() {
+        return gender.toString();
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public String getId() {

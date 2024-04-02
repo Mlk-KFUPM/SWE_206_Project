@@ -1,14 +1,40 @@
 package com.example.demo.api.model;
 
-import java.util.Date;
+import java.util.ArrayList;
 
 public class Facility {
     private String name;
-    private String gender;
+    private ArrayList<Reservation> reservationList = new ArrayList<>();
 
-    public Facility(String name, String gender){
+    private Gender gender;
+    public enum Gender  {
+        male,
+        female,
+        both
+    }
+
+
+    public Facility(String name, Gender gender){
         this.name = name;
         this.gender = gender;
+    }
+
+    public boolean addReservation(String timing, String userID){
+
+
+        for (Reservation reservation:reservationList){
+            if (reservation.getTiming().equals(timing)){
+                return false;
+            }
+        }
+        reservationList.add(new Reservation(timing,userID));
+        return true;
+
+
+    }
+
+    public ArrayList<Reservation> getAllReservations(){
+        return reservationList;
     }
 
 
@@ -21,10 +47,11 @@ public class Facility {
     }
 
     public String getGender() {
-        return gender;
+        return gender.toString();
     }
 
-    public void setGender(String gender) {
+    public void setGender(Gender gender) {
         this.gender = gender;
     }
+
 }
