@@ -20,13 +20,21 @@ public class Services {
         facilityList = new ArrayList<>();
         reservationList = new ArrayList<>();
 
-        userList.add(new User(1,"a", "aa@mail.com",  "123"));
-        userList.add(new User(2,"b", "b@mail.com",  "123"));
-        userList.add(new User(3,"c", "c@mail.com",  "123"));
+        userList.add(new User("1","a", "aa@mail.com",  "123"));
+        userList.add(new User("2","b", "b@mail.com",  "123"));
+        userList.add(new User("3","c", "c@mail.com",  "123"));
 
         facilityList.add(new Facility("swimming pool", "male"));
         facilityList.add(new Facility("swimming pool", "female"));
 
+    }
+    public User findUser(String id){
+        for (User user:userList){
+            if (user.getId() == id){
+                return user;
+            }
+        }
+        return null;
     }
 
     public boolean login(String email, String password){
@@ -38,7 +46,7 @@ public class Services {
         return false;
     }
 
-    public Object facilities(){
+    public Object facilities(String userID){
         return facilityList.toArray();
     }
 

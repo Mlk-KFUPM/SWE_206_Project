@@ -4,47 +4,29 @@ import com.example.demo.api.model.Facility;
 import com.example.demo.api.model.Reservation;
 import com.example.demo.service.Services;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-// we want 6 api routes
-/*
-        localhost:8080/api
-
-/login ?username= & password=
-
-/facilities
-
-/reservation ?facilityName= & gender= & timing= & userID=
-
-/userReservations ?userID=
-
-/createEvent ?userID= & facilityId= & time=
-
-/joinEvent ?userID= & eventId=
-
-
-
-*/
+class LoginRequest {
+    public String email;
+    public String password;
+}
 @RestController
-public class UserController {
+public class Controller {
 
     private final Services services;
 
     @Autowired
-    public UserController(Services services){
+    public Controller(Services services){
         this.services = services;
     }
 
-    @GetMapping("/login")
-    public boolean login(@RequestParam String email, @RequestParam String password){
-        return  services.login(email, password);
+    @PostMapping("/login")
+    public boolean login(@RequestBody LoginRequest body){
+        return  services.login(body.email, body.password);
     }
     @GetMapping("/facilities")
-    public Object getFacilities(){
-        return services.facilities();
+    public Object getFacilities(@RequestParam String userID){
+        return services.facilities(userID);
     }
 
     @GetMapping("/reservation")
