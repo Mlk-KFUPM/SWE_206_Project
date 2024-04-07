@@ -5,8 +5,8 @@ import com.example.demo.api.model.Facility;
 import com.example.demo.api.model.Reservation;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @Service
 public class Services {
@@ -35,13 +35,13 @@ public class Services {
         return null;
     }
 
-    public boolean login(String email, String password){
+    public User login(String email, String password){
         for (User user: userList) {
             if(email.equals(user.getEmail()) && password.equals(user.getPassword())){
-                return true;
+                return user;
             }
         }
-        return false;
+        return null;
     }
 
     public Object facilities(String userID){
@@ -66,34 +66,48 @@ public class Services {
 
     }
 
-    public boolean addReservation(String facilityName, String timing, String userID){
+    public Reservation addReservation(String facilityName, String time, String userID){
+//            time = "2024-04-07T15:30";
+
+//        the difference between startTime and endTime is 1 Hour only
+        LocalDateTime startTime = LocalDateTime.parse(time);
+        LocalDateTime endTime = LocalDateTime.of(startTime.getYear(), startTime.getMonth(), startTime.getDayOfMonth(), startTime.getHour()+1, startTime.getMinute());
 
         User user = findUser(userID);
 
-        for (Facility facility: facilityList){
+        if (user.getRole() == User.Role.student || user.getRole() == User.Role.club_president){
 
-            if (facility.getName().equals(facilityName)){
-                if ( user.getGender().equals(facility.getGender()) || facility.getGender().equals("both")) {
-                    return facility.addReservation(timing, userID);
+            for (Facility facility: facilityList){
+                if (facility.getName().equals(facilityName)){
+                    if ( user.getGender().equals(facility.getGender())) {
+                        return facility.addReservation(startTime, endTime, userID);
+                    }
+                }
+
+            }
+        }
+        else {
+            for (Facility facility: facilityList){
+                if (facility.getName().equals(facilityName)){
+                    return facility.addReservation(startTime, endTime, userID);
                 }
             }
-
         }
-        return false;
+        return null;
     }
 
     public Object userReservations(String id){
-        List<Reservation> userReseravtion = new ArrayList<>();
+        Map<String , List<Reservation>> userReseravtion = new HashMap<>();
 
         for (Facility facility: facilityList){
             for (Reservation reservation: facility.getAllReservations()){
                 if (reservation.getUserID().equals(id)){
-                    userReseravtion.add(reservation);
+                    userReseravtion.computeIfAbsent(facility.getName(),k -> new ArrayList<>()).add(reservation);
                 }
             }
         }
 
-        return userReseravtion.toArray();
+        return userReseravtion;
     }
 
 

@@ -1,6 +1,8 @@
 package com.example.demo.api.model;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Facility {
     private String name;
@@ -19,18 +21,20 @@ public class Facility {
         this.gender = gender;
     }
 
-    public boolean addReservation(String timing, String userID){
-
+    public Reservation addReservation(LocalDateTime startTime, LocalDateTime endTime, String userID){
 
         for (Reservation reservation:reservationList){
-            if (reservation.getTiming().equals(timing)){
-                return false;
+            LocalDateTime start2 = reservation.getStartTime();
+            LocalDateTime end2 = reservation.getEndTime();
+            if (!startTime.isBefore(end2) || !endTime.isAfter(start2)){
+                return null;
             }
         }
-        reservationList.add(new Reservation(timing,userID));
-        return true;
 
+        Reservation newReservaion = new Reservation(startTime, endTime, userID);
 
+        reservationList.add(newReservaion);
+        return newReservaion;
     }
 
     public ArrayList<Reservation> getAllReservations(){
