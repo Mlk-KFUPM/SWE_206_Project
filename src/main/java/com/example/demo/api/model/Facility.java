@@ -24,9 +24,17 @@ public class Facility {
     public Reservation addReservation(LocalDateTime startTime, LocalDateTime endTime, String userID){
 
         for (Reservation reservation:reservationList){
-            LocalDateTime start2 = reservation.getStartTime();
-            LocalDateTime end2 = reservation.getEndTime();
-            if (!startTime.isBefore(end2) || !endTime.isAfter(start2)){
+
+
+            LocalDateTime startReservationtime = reservation.getStartTime();
+            LocalDateTime endReservationtime = reservation.getEndTime();
+//            check if they are any conflict
+            if ((startTime.isBefore(endReservationtime) && startTime.isAfter(startReservationtime)) ||
+                    (endTime.isAfter(startReservationtime) && endTime.isBefore(endReservationtime))) {
+                return null;
+            }
+//            if the two times are equal
+            if (startTime.equals(startReservationtime) || endTime.equals(endReservationtime)){
                 return null;
             }
         }
