@@ -1,9 +1,11 @@
 package com.example.demo.service;
 
+import com.example.demo.api.model.Event;
 import com.example.demo.api.model.User;
 import com.example.demo.api.model.Facility;
 import com.example.demo.api.model.Reservation;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -13,10 +15,12 @@ public class Services {
 
     private List<User> userList;
     private List<Facility> facilityList;
+    private List<Event> EventList;
 
     public Services() {
         userList = new ArrayList<>();
         facilityList = new ArrayList<>();
+        EventList = new ArrayList<>();
 
         userList.add(new User("1","a", "aa@mail.com",  "123", User.Role.student, User.Gender.male));
         userList.add(new User("2","b", "b@mail.com",  "123", User.Role.club_president, User.Gender.male));
@@ -111,5 +115,45 @@ public class Services {
     }
 
 
+    public Object createEvent(String facilityName, String time, String userID, int targetNumber){
+//        ###### we have to check if this event has been created or not ######
 
+//        get the start time by parsing and get the end time by increment the hour by one
+//        (it will be changed later)
+        LocalDateTime startTime = LocalDateTime.parse(time);
+        LocalDateTime endTime = LocalDateTime.of(startTime.getYear(), startTime.getMonth(), startTime.getDayOfMonth(), startTime.getHour()+1, startTime.getMinute());
+
+//        1 - find the facility
+//        2 - get the user and check the gender with the facility
+
+        User user = findUser(userID);
+
+        for (Facility facility: facilityList){
+            if (facility.getName().equals(facilityName)){
+                if ( user.getGender().equals(facility.getGender())) {
+                    return EventList.add(new Event(facility, startTime,endTime,userID,targetNumber));
+
+                }else {
+                    return null;
+                }
+            }
+
+        }
+        return null;
+    }
+
+    public Object joinEvent(String facilityName, String userID){
+        for (Event event: EventList){
+            if (event.getFacility().getName().equals(facilityName)){
+                event.joinEvnet(userID);
+//                if we reach the wanted number of user in the event, we want to create a reservation of it
+                if (event.getTargetNumber() == event.getParticipants()){
+                    addReservation(facilityName, String.valueOf(event.getStartTime()), event.getCreaterID());
+                    EventList.remove(event);
+                }
+                return "the user has join the event";
+            }
+        }
+        return "something went wrong";
+    }
  }
