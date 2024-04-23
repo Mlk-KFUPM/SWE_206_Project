@@ -15,7 +15,8 @@ class LoginRequest {
 
 class addReservationBody {
     public String facilityName;
-    public String time;
+    public String startTime;
+    public String endTime;
 }
 class createEventBody {
     public String facilityName;
@@ -57,12 +58,12 @@ public class Controller {
     }
     @GetMapping("/facilities")
     public Object getFacilities(@RequestParam String userID){
-        return services.facilities(userID);
+        return services.getFacilities(userID);
     }
 
     @PostMapping("/addReservation")
     public Reservation reservation(@RequestBody addReservationBody body, @RequestParam String userID){
-        return  services.addReservation(body.facilityName, body.time, userID);
+        return  services.addReservation(body.facilityName, body.startTime, body.endTime, userID);
     }
     @GetMapping("/userReservations")
     public Object userReservations(@RequestParam String userID){

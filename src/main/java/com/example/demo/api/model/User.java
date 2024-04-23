@@ -1,45 +1,53 @@
 package com.example.demo.api.model;
 
-public class User {
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public abstract class User {
 
     private String id;
     private String name;
     private String password;
     private String email;
     private Gender gender;
-    private Role role;
 
-    public enum Role {
-        admin,
-        student,
-        faculty,
-        staff,
-        club_president
-    }
     public enum Gender {
         male,
         female
     }
 
 
-    public User(String id, String name, String email, String password, Role role, Gender gender) {
+    public User(String id, String name, String email, String password, Gender gender) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
-        this.role = role;
         this.gender = gender;
     }
+
+    public abstract ArrayList<Facility> getFaculties(ArrayList<Facility> faculties);
+
+    public  abstract Reservation addReservation(Facility facility, LocalDateTime startTime, LocalDateTime endTime);
+
+    public Object getReservations(List<Facility> facilities){
+        Map<String , List<Reservation>> userReservations = new HashMap<>();
+//        ArrayList<Reservation> userReservations = new ArrayList<>();
+
+        for (Facility facility: facilities){
+            for (Reservation reservation: facility.getAllReservations()){
+                if (reservation.getUserID().equals(getId())){
+                    userReservations.computeIfAbsent(facility.getName(),k -> new ArrayList<>()).add(reservation);
+                }
+            }
+        }
+        return userReservations;
+    }
+
     public String getGender() {
         return gender.toString();
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
     }
 
     public String getId() {

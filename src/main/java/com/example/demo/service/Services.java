@@ -1,9 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.api.model.Event;
-import com.example.demo.api.model.User;
-import com.example.demo.api.model.Facility;
-import com.example.demo.api.model.Reservation;
+import com.example.demo.api.model.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -13,18 +10,19 @@ import java.util.*;
 @Service
 public class Services {
 
-    private List<User> userList;
-    private List<Facility> facilityList;
+    private ArrayList<User> userList;
+    private ArrayList<Facility> facilityList;
     private List<Event> EventList;
 
     public Services() {
+//        these list works like a database, which stores the data of the system
         userList = new ArrayList<>();
         facilityList = new ArrayList<>();
         EventList = new ArrayList<>();
 
-        userList.add(new User("1","a", "aa@mail.com",  "123", User.Role.student, User.Gender.male));
-        userList.add(new User("2","b", "b@mail.com",  "123", User.Role.club_president, User.Gender.male));
-        userList.add(new User("3","c", "c@mail.com",  "123", User.Role.faculty, User.Gender.female));
+        userList.add(new Admin("1","a", "aa@mail.com",  "123", User.Gender.male));
+        userList.add(new Student("2","b", "b@mail.com",  "123", User.Gender.male));
+        userList.add(new Student("3","c", "c@mail.com",  "123", User.Gender.female));
 
         facilityList.add(new Facility("swimming pool", Facility.Gender.both));
         facilityList.add(new Facility("swimming pool 2", Facility.Gender.male));
@@ -48,70 +46,40 @@ public class Services {
         return null;
     }
 
-    public Object facilities(String userID){
-
+//    getFacilities() works : but Student class will return the Both gender in the list
+    public Object getFacilities(String userID){
 
         User user = findUser(userID);
-        if (user.getRole() != User.Role.admin){
-
-            List<Facility> data = new ArrayList<>();
-            for (Facility facility:facilityList){
-
-                if (facility.getGender().equals(user.getGender()) || facility.getGender().equals("both")){
-                    data.add(facility);
-                }
-            }
-
-            return data.toArray();
-
-        }else {
-            return facilityList.toArray();
-        }
+        return user.getFaculties(facilityList);
 
     }
 
-    public Reservation addReservation(String facilityName, String time, String userID){
-//            time = "2024-04-07T15:30";
+//    addReservation() works : but Student class will add Faculty that is Both gender
+    public Reservation addReservation(String facilityName, String startAt, String endAt, String userID){
+//        Example of time that should be pass to this method :
+//            startAt = "2024-04-07T15:30";
+//            endAt = "2024-04-07T16:30";
 
-//        the difference between startTime and endTime is 1 Hour only
-        LocalDateTime startTime = LocalDateTime.parse(time);
-        LocalDateTime endTime = LocalDateTime.of(startTime.getYear(), startTime.getMonth(), startTime.getDayOfMonth(), startTime.getHour()+1, startTime.getMinute());
-
+        LocalDateTime startTime = LocalDateTime.parse(startAt);
+        LocalDateTime endTime = LocalDateTime.parse(endAt);
+//        Get the user using a method called findUser
         User user = findUser(userID);
 
-        if (user.getRole() == User.Role.student || user.getRole() == User.Role.club_president){
+        for (Facility facility: facilityList){
+            if (facility.getName().equals(facilityName)){
+                return user.addReservation(facility, startTime, endTime);
 
-            for (Facility facility: facilityList){
-                if (facility.getName().equals(facilityName)){
-                    if ( user.getGender().equals(facility.getGender())) {
-                        return facility.addReservation(startTime, endTime, userID);
-                    }
-                }
-
-            }
-        }
-        else {
-            for (Facility facility: facilityList){
-                if (facility.getName().equals(facilityName)){
-                    return facility.addReservation(startTime, endTime, userID);
-                }
             }
         }
         return null;
+
     }
 
-    public Object userReservations(String id){
-        Map<String , List<Reservation>> userReseravtion = new HashMap<>();
+    public Object userReservations(String userID){
+        User user = findUser(userID);
 
-        for (Facility facility: facilityList){
-            for (Reservation reservation: facility.getAllReservations()){
-                if (reservation.getUserID().equals(id)){
-                    userReseravtion.computeIfAbsent(facility.getName(),k -> new ArrayList<>()).add(reservation);
-                }
-            }
-        }
-
-        return userReseravtion;
+        Object list = user.getReservations(facilityList);
+        return list;
     }
 
 
@@ -148,7 +116,7 @@ public class Services {
                 event.joinEvnet(userID);
 //                if we reach the wanted number of user in the event, we want to create a reservation of it
                 if (event.getTargetNumber() == event.getParticipants()){
-                    addReservation(facilityName, String.valueOf(event.getStartTime()), event.getCreaterID());
+                    addReservation(facilityName, String.valueOf(event.getStartTime()), String.valueOf(event.getStartTime()), event.getCreaterID());
                     EventList.remove(event);
                 }
                 return "the user has join the event";
