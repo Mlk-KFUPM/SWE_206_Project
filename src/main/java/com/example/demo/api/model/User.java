@@ -30,7 +30,9 @@ public abstract class User {
 
     public abstract ArrayList<Facility> getFaculties(ArrayList<Facility> faculties);
 
-    public  abstract Reservation addReservation(Facility facility, LocalDateTime startTime, LocalDateTime endTime);
+    public abstract Reservation addReservation(Facility facility, Reservation reservation);
+
+    public abstract boolean joinEvent(Facility facility, Event event);
 
     public Object getReservations(List<Facility> facilities){
         Map<String , List<Reservation>> userReservations = new HashMap<>();

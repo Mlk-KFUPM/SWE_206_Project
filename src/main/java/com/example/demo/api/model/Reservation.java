@@ -1,8 +1,10 @@
 package com.example.demo.api.model;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 public class Reservation {
+    private String ID;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private String userID;
@@ -11,6 +13,9 @@ public class Reservation {
         this.startTime = startTimeTime;
         this.endTime = endTime;
         this.userID = userID;
+
+//        create unique id
+        this.ID = String.valueOf(UUID.randomUUID());
     }
 
 
@@ -36,6 +41,10 @@ public class Reservation {
 
     public void setUserID(String userID) {
         this.userID = userID;
+    }
+
+    public String getID() {
+        return ID;
     }
 
 }

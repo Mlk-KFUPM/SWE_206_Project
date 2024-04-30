@@ -12,13 +12,11 @@ public class Services {
 
     private ArrayList<User> userList;
     private ArrayList<Facility> facilityList;
-    private List<Event> EventList;
 
     public Services() {
 //        these list works like a database, which stores the data of the system
         userList = new ArrayList<>();
         facilityList = new ArrayList<>();
-        EventList = new ArrayList<>();
 
         userList.add(new Admin("1","a", "aa@mail.com",  "123", User.Gender.male));
         userList.add(new Student("2","b", "b@mail.com",  "123", User.Gender.male));
@@ -50,7 +48,7 @@ public class Services {
     public Object getFacilities(String userID){
 
         User user = findUser(userID);
-        return user.getFaculties(facilityList);
+        return user.getFaculties(facilityList); // to restrict Male or Female
 
     }
 
@@ -62,13 +60,45 @@ public class Services {
 
         LocalDateTime startTime = LocalDateTime.parse(startAt);
         LocalDateTime endTime = LocalDateTime.parse(endAt);
+
 //        Get the user using a method called findUser
         User user = findUser(userID);
 
         for (Facility facility: facilityList){
             if (facility.getName().equals(facilityName)){
-                return user.addReservation(facility, startTime, endTime);
+                Reservation reservation = new Reservation(startTime, endTime, user.getId());
+                return user.addReservation(facility, reservation);
 
+            }
+        }
+        return null;
+
+    }
+
+    public Object createEvent(String facilityName, String startAt, String endAt, String userID, int targetNumber){
+        LocalDateTime startTime = LocalDateTime.parse(startAt);
+        LocalDateTime endTime = LocalDateTime.parse(endAt);
+        User user = findUser(userID);
+
+        for (Facility facility: facilityList){
+            if (facility.getName().equals(facilityName)){
+                Event event = new Event(startTime, endTime, user.getId(), targetNumber);
+                return user.addReservation(facility, event);
+            }
+        }
+        return null;
+    }
+
+    public Object joinEvent(String eventID, String userID){
+        User user = findUser(userID);
+
+        for (Facility facility: facilityList){
+
+            for (Reservation reservaion:facility.getAllReservations()){
+
+                if (reservaion.getID().equals(eventID)){
+                    return user.joinEvent(facility, (Event) reservaion);
+                }
             }
         }
         return null;
@@ -76,6 +106,7 @@ public class Services {
     }
 
     public Object userReservations(String userID){
+//        it is like the history of the user reservations
         User user = findUser(userID);
 
         Object list = user.getReservations(facilityList);
@@ -83,45 +114,23 @@ public class Services {
     }
 
 
-    public Object createEvent(String facilityName, String time, String userID, int targetNumber){
-//        ###### we have to check if this event has been created or not ######
 
-//        get the start time by parsing and get the end time by increment the hour by one
-//        (it will be changed later)
-        LocalDateTime startTime = LocalDateTime.parse(time);
-        LocalDateTime endTime = LocalDateTime.of(startTime.getYear(), startTime.getMonth(), startTime.getDayOfMonth(), startTime.getHour()+1, startTime.getMinute());
-
-//        1 - find the facility
-//        2 - get the user and check the gender with the facility
-
+//    these methods are for admins only
+    public void addFacilty(String userID){
         User user = findUser(userID);
-
-        for (Facility facility: facilityList){
-            if (facility.getName().equals(facilityName)){
-                if ( user.getGender().equals(facility.getGender())) {
-                    return EventList.add(new Event(facility, startTime,endTime,userID,targetNumber));
-
-                }else {
-                    return null;
-                }
-            }
-
+        if (user instanceof Admin){
+            ((Admin) user).addFacilty(facilityList);
+        }else {
+            System.out.println("the id do not belonged to an admin");
         }
-        return null;
+    }
+    public void deleteFacilty (String userID){
+        User user = findUser(userID);
+        if (user instanceof Admin){
+            ((Admin) user).addFacilty(facilityList);
+        }else {
+            System.out.println("the id do not belonged to an admin");
+        }
     }
 
-    public Object joinEvent(String facilityName, String userID){
-        for (Event event: EventList){
-            if (event.getFacility().getName().equals(facilityName)){
-                event.joinEvnet(userID);
-//                if we reach the wanted number of user in the event, we want to create a reservation of it
-                if (event.getTargetNumber() == event.getParticipants()){
-                    addReservation(facilityName, String.valueOf(event.getStartTime()), String.valueOf(event.getStartTime()), event.getCreaterID());
-                    EventList.remove(event);
-                }
-                return "the user has join the event";
-            }
-        }
-        return "something went wrong";
-    }
  }

@@ -21,12 +21,19 @@ public class Student extends User{
     }
 
     @Override
-    public Reservation addReservation(Facility facility, LocalDateTime startTime, LocalDateTime endTime) {
+    public Reservation addReservation(Facility facility, Reservation reservation) {
         if (getGender().equals(facility.getGender())){
-            return facility.addReservation(startTime, endTime, getId());
+            return facility.addReservation(reservation, getId());
         }else {
             return null;
         }
-
+    }
+    @Override
+    public boolean joinEvent(Facility facility, Event event) {
+        if(getGender().equals(facility.getGender())){
+            return event.joinEvent(getId());
+        }else {
+            return false;
+        }
     }
 }

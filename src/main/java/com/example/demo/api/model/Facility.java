@@ -21,13 +21,15 @@ public class Facility {
         this.gender = gender;
     }
 
-    public Reservation addReservation(LocalDateTime startTime, LocalDateTime endTime, String userID){
+    public Reservation addReservation(Reservation reservation, String userID){
+//        here to check if there is any conflict with the time
+        LocalDateTime startTime = reservation.getStartTime();
+        LocalDateTime endTime = reservation.getEndTime();
 
-        for (Reservation reservation:reservationList){
+        for (Reservation element : reservationList){
 
-
-            LocalDateTime startReservationtime = reservation.getStartTime();
-            LocalDateTime endReservationtime = reservation.getEndTime();
+            LocalDateTime startReservationtime = element.getStartTime();
+            LocalDateTime endReservationtime = element.getEndTime();
 //            check if they are any conflict
             if ((startTime.isBefore(endReservationtime) && startTime.isAfter(startReservationtime)) ||
                     (endTime.isAfter(startReservationtime) && endTime.isBefore(endReservationtime))) {

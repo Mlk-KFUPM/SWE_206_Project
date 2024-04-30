@@ -17,8 +17,20 @@ public class Admin extends User{
 
 
     @Override
-    public Reservation addReservation(Facility facility, LocalDateTime startTime, LocalDateTime endTime) {
-//        admin does not have any restriction
-        return facility.addReservation(startTime, endTime, getId());
+    public Reservation addReservation(Facility facility,Reservation reservation) {
+//        no restriction for the gender so, pass it to the facility in order to save the reservation
+        return facility.addReservation(reservation, getId());
+    }
+
+    @Override
+    public boolean joinEvent(Facility facility, Event event) {
+        return event.joinEvent(getId());
+    }
+
+    public void addFacilty(ArrayList<Facility> faculties){
+        faculties.add(new Facility("Test", Facility.Gender.male));
+    }
+    public void deleteFacilty(ArrayList<Facility> faculties){
+//        faculties.remove();
     }
 }
