@@ -1,8 +1,8 @@
 package com.example.demo.service;
 
 import com.example.demo.api.model.*;
+import com.example.demo.model.*;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
 import java.util.*;

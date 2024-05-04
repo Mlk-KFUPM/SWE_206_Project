@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>KFUPM Resources Management</title>
+    <link rel="stylesheet" type="text/css" href="styleHome.css" />
+  </head>
+  <body>
+    <header>
+      <h1>KFUPM Resources Management</h1>
+      <nav>
+        <ul>
+          <li><a href="reservations.html">View Reservations</a></li>
+          <li><a href="interface.html">Sign Out</a></li>
+          <button id="create-button">Create Reservation</button>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- Create a Reservation page: -->
+    <div id="modal" class="modal">
+      <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <h1>Reservation Form</h1>
+        <form id="modal-form">
+          <label for="place">Place:</label>
+          <select id="place" name="place">
+            <option value="Lab">Lab</option>
+            <option value="Swimming Pool">Swimming Pool</option>
+            <!-- Add more options as needed -->
+          </select>
+          <br />
+          <label for="capacity">Capacity:</label>
+          <input type="number" id="capacity" name="capacity" min="1" required />
+          <br />
+          <label for="start-date">Start Date:</label>
+          <input type="date" id="start-date" name="start-date" required />
+          <br />
+          <label for="end-date">End Date:</label>
+          <input type="date" id="end-date" name="end-date" required />
+          <br />
+          <label for="gender">Gender:</label>
+          <select id="gender" name="gender">
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Both">Both</option>
+          </select>
+          <br />
+          <button type="submit" id="submit-btn">Submit</button>
+          <button type="button" class="cancel-btn">Cancel</button>
+        </form>
+      </div>
+    </div>
+
+    <main>
+      <section id="intro">
+        <h2>Welcome to KFUPM Reservations Management</h2>
+        <p>Manage and reserve classrooms, labs, and facilities efficiently.</p>
+      </section>
+
+      <!-- Reservation section -->
+      <section id="reservations">
+        <h2>All Reservations</h2>
+        <div id="reservation-container"></div>
+      </section>
+    </main>
+    <footer>
+      <p>&copy; 2024 KFUPM Reservations Management. All rights reserved.</p>
+    </footer>
+    <script src="CreateReservation.js"></script>
+  </body>
+</html>

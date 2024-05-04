@@ -1,8 +1,7 @@
-package com.example.demo.api.model;
+package com.example.demo.model;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Facility {
     private String name;

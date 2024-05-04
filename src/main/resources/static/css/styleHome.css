@@ -1,0 +1,121 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+}
+
+header {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+}
+
+nav ul {
+  display: flex;
+  justify-content: space-between;
+  list-style-type: none;
+  padding: 0;
+}
+
+nav ul li {
+  display: inline;
+  margin-right: 10px;
+}
+
+nav ul li a {
+  color: white;
+  text-decoration: none;
+}
+
+main {
+  padding: 20px;
+}
+
+#reservations-list {
+  display: flex;
+  justify-content: space-around;
+}
+
+.reservation {
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  width: 30%;
+}
+
+footer {
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 10px 20px;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+/* Creating Reservation Section */
+
+#create-button {
+  background-color: transparent; /* Removes background color */
+  color: white; /* Sets text color to white */
+  border: none; /* Removes default border */
+  padding: 10px 20px; /* Adds some padding for better visibility */
+  cursor: pointer; /* Indicates clickable behavior */
+  font-size: 16px; /* Adjust font size as needed */
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+.close-btn {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Reservation Section */
+#reservations {
+  padding: 20px;
+}
+
+.reservation-row {
+  display: flex;
+  gap: 20px;
+}
+
+.reservation {
+  border: 1px solid #ccc;
+  padding: 10px;
+  width: calc(33.33% - 20px);
+  box-sizing: border-box;
+}

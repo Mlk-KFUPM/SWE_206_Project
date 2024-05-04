@@ -1,10 +1,9 @@
-package com.example.demo.api.controller;
+package com.example.demo.controller;
 
-import com.example.demo.api.model.Reservation;
-import com.example.demo.api.model.User;
+import com.example.demo.model.Reservation;
+import com.example.demo.model.User;
 import com.example.demo.service.Services;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
